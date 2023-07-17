@@ -16,7 +16,7 @@ class GrpcRepository private constructor(
         return stub.getFeed(request)
     }
 
-    // ...
+    // ...we can add more methods here
 
     companion object {
         @Volatile
