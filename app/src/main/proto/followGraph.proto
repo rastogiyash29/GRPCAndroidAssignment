@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+import "commons.proto";
+
+option java_multiple_files = true;
+option java_package = "com.kotlang.social";
+option java_outer_classname = "FollowGraphInternal";
+
+option go_package = "github.com/Kotlang/socialGo/generated";
+
+package social;
+
+service FollowGraph {
+    rpc FollowUser(FollowUserRequest) returns (SocialStatusResponse) {}
+    rpc UnFollowUser(UnFollowUserRequest) returns (SocialStatusResponse) {}
+    rpc GetFollowers(GetFollowersRequest) returns (GetFollowersResponse) {}
+    rpc GetFollowing(GetFollowingRequest) returns (GetFollowingResponse) {}
+    rpc IsFollowing(IsFollowingRequest) returns (IsFollowingResponse) {}
+}
+
+message FollowUserRequest {
+    string userId = 1;
+}
+
+message UnFollowUserRequest {
+    string userId = 1;
+}
+
+message GetFollowersRequest {
+    //userId is optional.
+    // if not provided, logged in User's followers will be returned
+    string userId = 1;
+
+    //pagination
+    //pageNumber starting from 0
+    int32 pageSize = 3;
+    int32 pageNumber = 4;
+}
+
+message GetFollowersResponse {
+    repeated SocialProfile followers = 1;
+}
+
+message GetFollowingRequest {
+    //userId is optional.
+    // if not provided, logged in User's following will be returned
+    string userId = 1;
+
+    //pagination
+    //pageNumber starting from 0
+    int32 pageSize = 3;
+    int32 pageNumber = 4;
+}
+
+message GetFollowingResponse {
+    repeated SocialProfile following = 1;
+}
+
+// check if user1 is following user2.
+message IsFollowingRequest {
+    string follower = 1;
+    string followee = 2;
+}
+
+message IsFollowingResponse {
+    bool isFollowing = 1;
+}

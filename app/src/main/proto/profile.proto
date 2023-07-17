@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+import "common.proto";
+
+option java_multiple_files = true;
+option java_package = "com.kotlang.auth.login";
+option java_outer_classname = "ProfileInternal";
+
+option go_package = "github.com/Kotlang/authGo/generated";
+
+package login;
+
+service Profile {
+    rpc createOrUpdateProfile(CreateProfileRequest) returns (UserProfileProto) {}
+    rpc getProfileById(GetProfileRequest) returns (UserProfileProto) {}
+    rpc bulkGetProfileByIds(BulkGetProfileRequest) returns (BulkGetProfileResponse) {}
+    // returns a pre-signed Url to upload profile image.
+    rpc getProfileImageUploadUrl(ProfileImageUploadRequest) returns (ProfileImageUploadURL) {}
+    rpc getProfilesByAttribute(AttributeRequest) returns (AttributeResponse) {}
+    // directly takes input of profile image and uploads the image.
+    rpc UploadProfileImage(stream UploadImageRequest) returns (UploadImageResponse) {}
+}
+
+//all are optional. If any of the field is not set, old value will be retained.
+//For e.g. to update just photoUrl, send only photoUrl in below proto
+message CreateProfileRequest {
+    string name = 2;
+    Gender gender = 4;
+    string photoUrl = 5;
+    string preferredLanguage = 7;
+    repeated string attributes = 8;
+    map<string, AddressProto> addresses = 3;
+    //serialized json of static metadata for user profile.
+    // TODO: change to [ { "field": "", "value": "", "type": "" } ]
+    string metaDataMap = 9;
+}
+
+//user id is optional. If user Id is not provided,
+//self profile based on auth token is returned
+message GetProfileRequest {
+    string userId = 1;
+}
+
+message ProfileImageUploadRequest {
+    // jpg or png or mp4
+    string mediaExtension = 1;
+}
+
+message ProfileImageUploadURL {
+    string uploadUrl = 1;
+    string mediaUrl = 2;
+    string instructions = 3;
+}
+
+message AttributeRequest {
+    string attribute = 1;
+}
+
+message AttributeResponse {
+    repeated UserProfileProto profiles = 1;
+}
+
+message UploadImageRequest {
+    bytes chunkData = 1;
+}
+
+message UploadImageResponse {
+    string uploadPath = 1;
+}
+
+message BulkGetProfileRequest {
+    repeated string userIds = 1;
+}
+
+message BulkGetProfileResponse {
+    repeated UserProfileProto profiles = 1;
+}

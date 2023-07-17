@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.kotlang.auth.login";
+option java_outer_classname = "ProfileMasterInternal";
+
+option go_package = "github.com/Kotlang/authGo/generated";
+
+package login;
+
+service ProfileMaster {
+    rpc GetProfileMaster(GetProfileMasterRequest) returns (ProfileMasterResponse) {}
+    rpc GetLanguages(GetLanguagesRequest) returns (LanguagesResponse) {}
+    
+    // admin API
+    rpc BulkGetProfileMaster(BulkGetProfileMasterRequest) returns (ProfileMasterResponse) {}
+    // admin API
+    rpc DeleteProfileMaster(DeleteProfileMasterRequest) returns (DeleteProfileMasterResponse) {}
+    // admin API
+    rpc AddProfileMaster(AddProfileMasterRequest) returns (ProfileMasterProto) {}
+    // admin API
+    rpc UpdateProfileMaster(ProfileMasterProto) returns (ProfileMasterProto) {}
+}
+
+// Profile Master
+
+message GetProfileMasterRequest {
+    string language = 1;
+}
+
+message ProfileMasterResponse {
+    repeated ProfileMasterProto profileMasterList = 1;
+}
+
+message GetLanguagesRequest {}
+message LanguagesResponse {
+    repeated string languages = 1;
+}
+
+message ProfileMasterProto {
+    string id = 1;
+    string field = 2;
+    // TODO: Change to enum.
+    string type = 3;
+    string language = 4;
+    repeated string options = 5;
+}
+
+// Bulk Profile Master
+
+message BulkGetProfileMasterRequest {}
+
+// Delete Profile Master
+message DeleteProfileMasterRequest {
+    string id = 1;
+}
+message DeleteProfileMasterResponse {
+    string status = 1;
+}
+
+// Add Profile Master
+message AddProfileMasterRequest {
+    string field = 1;
+    string type = 2;
+    string language = 3;
+    repeated string options = 4;
+}

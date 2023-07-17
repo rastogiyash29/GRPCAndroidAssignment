@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+import "commons.proto";
+
+option java_multiple_files = true;
+option java_package = "com.kotlang.social";
+option java_outer_classname = "NearbyInternal";
+
+option go_package = "github.com/Kotlang/socialGo/generated";
+
+package social;
+
+service Nearby {
+    rpc AddLocation(UserGpsLocation) returns (SocialStatusResponse) {}
+    rpc getNearby(GetNearbyRequest) returns (GetNearbyResponse) {}
+}
+
+message UserGpsLocation {
+    double x = 1;
+    double y = 2;
+}
+
+message GetNearbyRequest {
+    //pagination
+    //pageNumber starting from 0
+    int32 pageSize = 3;
+    int32 pageNumber = 4;
+}
+
+message GetNearbyResponse {
+    repeated string users = 1;
+}

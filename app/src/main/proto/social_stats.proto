@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.kotlang.social";
+option java_outer_classname = "SocialStatsInternal";
+
+option go_package = "github.com/Kotlang/socialGo/generated";
+
+package social;
+
+service SocialStats {
+    rpc GetStats (GetStatsRequest) returns (GetStatsResponse) {}
+}
+
+message GetStatsRequest {
+    // optional. If not passed, current logged in user stats will be returned.
+    string userId = 1;
+}
+
+message GetStatsResponse {
+    int32 followersCount = 1;
+    int32 followingCount = 2;
+    int32 postsCount = 3;
+    // int32 likesCount = 4;
+    // int32 commentsCount = 5;
+}
